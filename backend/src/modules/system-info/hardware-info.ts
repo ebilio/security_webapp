@@ -115,7 +115,7 @@ export async function getHardwareInfo(): Promise<HardwareInfo> {
               vendor: gpu.vendor,
               model: gpu.model,
               vram: gpu.vram
-            }))
+            })) as any
           };
         }
       }
