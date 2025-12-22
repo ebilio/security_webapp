@@ -31,7 +31,9 @@
       "Bash(sc.exe query:*)",
       "Bash(python3:*)",
       "Bash(npx:*)",
-      "Bash(echo \"---EXITCODE: $?\")"
+      "Bash(echo \"---EXITCODE: $?\")",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ]
   }
 }

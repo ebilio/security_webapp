@@ -3,7 +3,7 @@ import type { BrowserFingerprint } from '../types';
 
 export async function getBrowserFingerprint(): Promise<BrowserFingerprint> {
   const fp = await FingerprintJS.load();
-  const result = await fp.get();
+  await fp.get();
 
   // Parse user agent
   const ua = navigator.userAgent;
