@@ -1,0 +1,123 @@
+import { exec } from 'child_process';
+import { promisify } from 'util';
+import { readFile } from 'fs/promises';
+import { WindowsUpdateStatus, UACStatus, DiskEncryptionStatus } from '../../types';
+
+const execAsync = promisify(exec);
+
+async function isWSL(): Promise<boolean> {
+  try {
+    const procVersion = await readFile('/proc/version', 'utf-8');
+    return procVersion.toLowerCase().includes('microsoft') || procVersion.toLowerCase().includes('wsl');
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Controlla lo stato di Windows Update
+ */
+export async function checkWindowsUpdate(): Promise<WindowsUpdateStatus> {
+  try {
+    const isWsl = await isWSL();
+    const psCommand = isWsl ? 'powershell.exe' : 'powershell';
+
+    // Controlla Windows Update
+    const { stdout } = await execAsync(
+      `${psCommand} -Command "Get-WindowsUpdate -MicrosoftUpdate | Measure-Object | Select-Object -ExpandProperty Count"`
+    );
+
+    const pendingUpdates = parseInt(stdout.trim()) || 0;
+
+    console.log(`Windows Update: ${pendingUpdates} aggiornamenti pendenti`);
+
+    return {
+      enabled: true,
+      pendingUpdates: pendingUpdates,
+      lastCheck: new Date().toISOString()
+    };
+  } catch (error) {
+    console.error('Error checking Windows Update (module may not be installed):', error);
+
+    // Fallback: controlla se il servizio Windows Update è in esecuzione
+    try {
+      const isWsl = await isWSL();
+      const scCommand = isWsl ? 'sc.exe' : 'sc';
+      const { stdout } = await execAsync(`${scCommand} query wuauserv`);
+
+      const enabled = stdout.includes('RUNNING') || stdout.includes('IN ESECUZIONE');
+
+      return {
+        enabled: enabled,
+        pendingUpdates: 0 // Non possiamo determinarlo senza il modulo
+      };
+    } catch (fallbackError) {
+      console.error('Fallback Windows Update check failed:', fallbackError);
+      return {
+        enabled: false,
+        pendingUpdates: 0
+      };
+    }
+  }
+}
+
+/**
+ * Controlla se UAC (User Account Control) è abilitato
+ */
+export async function checkUAC(): Promise<UACStatus> {
+  try {
+    const isWsl = await isWSL();
+    const psCommand = isWsl ? 'powershell.exe' : 'powershell';
+
+    // Controlla UAC tramite registro
+    const { stdout } = await execAsync(
+      `${psCommand} -Command "Get-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System' -Name EnableLUA | Select-Object -ExpandProperty EnableLUA"`
+    );
+
+    const enabled = stdout.trim() === '1';
+
+    console.log(`UAC: ${enabled ? 'abilitato' : 'disabilitato'}`);
+
+    return {
+      enabled: enabled,
+      level: enabled ? 'enabled' : 'disabled'
+    };
+  } catch (error) {
+    console.error('Error checking UAC:', error);
+    return {
+      enabled: false
+    };
+  }
+}
+
+/**
+ * Controlla se BitLocker è abilitato
+ */
+export async function checkBitLocker(): Promise<DiskEncryptionStatus> {
+  try {
+    const isWsl = await isWSL();
+    const psCommand = isWsl ? 'powershell.exe' : 'powershell';
+
+    // Controlla BitLocker
+    const { stdout } = await execAsync(
+      `${psCommand} -Command "Get-BitLockerVolume | Where-Object {$_.ProtectionStatus -eq 'On'} | Measure-Object | Select-Object -ExpandProperty Count"`
+    );
+
+    const encryptedVolumes = parseInt(stdout.trim()) || 0;
+
+    console.log(`BitLocker: ${encryptedVolumes} volumi criptati`);
+
+    return {
+      enabled: encryptedVolumes > 0,
+      type: 'BitLocker',
+      volumes: encryptedVolumes
+    };
+  } catch (error) {
+    console.error('Error checking BitLocker:', error);
+    return {
+      enabled: false,
+      type: 'BitLocker',
+      volumes: 0
+    };
+  }
+}
