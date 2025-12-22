@@ -7,7 +7,7 @@ services:
     plan: free  # Piano gratuito (750 ore/mese)
     branch: main  # Branch git da deployare
     buildCommand: npm install && npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend && npm run build --prefix backend
-    startCommand: npm start --prefix backend
+    startCommand: cd backend && node dist/server.js
     envVars:
       - key: NODE_ENV
         value: production
