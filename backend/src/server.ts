@@ -15,10 +15,22 @@ dotenv.config();
 
 const app = express();
 const httpServer = createServer(app);
+
+// Configurazione CORS dinamica
+const corsOrigins = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(',')
+  : ['http://localhost:5173', 'http://localhost:3000'];
+
+// In production, accetta richieste dalla stessa origine
+if (process.env.NODE_ENV === 'production') {
+  corsOrigins.push('https://security-webapp-s6o9.onrender.com');
+}
+
 const io = new Server(httpServer, {
   cors: {
-    origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
-    methods: ['GET', 'POST']
+    origin: corsOrigins,
+    methods: ['GET', 'POST'],
+    credentials: true
   }
 });
 
@@ -30,7 +42,8 @@ app.use(helmet({
 }));
 
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:5173'
+  origin: corsOrigins,
+  credentials: true
 }));
 
 app.use(express.json());
