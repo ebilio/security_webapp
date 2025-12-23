@@ -1,22 +1,14 @@
 {
   "name": "security-webapp",
-  "version": "1.0.0",
-  "description": "Web application per valutazione sicurezza di rete e dispositivi",
+  "version": "2.0.0",
+  "description": "Client-side web application per valutazione sicurezza browser",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
-    "dev:backend": "npm run dev --prefix backend",
-    "dev:frontend": "npm run dev --prefix frontend",
+    "dev": "npm run dev --prefix frontend",
     "build": "npm install --prefix frontend && npm run build --prefix frontend",
-    "build:frontend": "npm run build --prefix frontend",
-    "build:backend": "npm run build --prefix backend",
-    "start": "npm start --prefix backend",
-    "install:all": "npm install && npm install --prefix backend && npm install --prefix frontend"
+    "preview": "npm run preview --prefix frontend"
   },
-  "keywords": ["security", "network", "assessment", "vulnerability", "scanner"],
+  "keywords": ["security", "browser", "assessment", "fingerprint", "client-side"],
   "author": "",
-  "license": "MIT",
-  "devDependencies": {
-    "concurrently": "^8.2.2"
-  }
+  "license": "MIT"
 }
