@@ -162,20 +162,29 @@ class ClientInfoService {
    */
   async getNetworkInfo(): Promise<ClientNetworkInfo> {
     try {
-      // Usa ipify per ottenere l'IP pubblico del client
+      // Usa ipify per ottenere l'IP pubblico (sempre HTTPS, sempre funziona)
       const ipResponse = await fetch('https://api.ipify.org?format=json');
       const ipData = await ipResponse.json();
 
-      // Usa ip-api per ottenere geolocalizzazione (gratis, no API key)
-      const geoResponse = await fetch(`http://ip-api.com/json/${ipData.ip}`);
-      const geoData = await geoResponse.json();
+      // Prova a ottenere geolocalizzazione con ipapi.com (versione HTTPS se disponibile)
+      // Nota: alcune API gratuite hanno limitazioni HTTPS
+      let geoData: any = {};
+      try {
+        // Usa ipwhois.app che supporta HTTPS gratuitamente
+        const geoResponse = await fetch(`https://ipwho.is/${ipData.ip}`);
+        if (geoResponse.ok) {
+          geoData = await geoResponse.json();
+        }
+      } catch (geoError) {
+        console.log('Geolocation API not available, skipping...');
+      }
 
       return {
         publicIp: ipData.ip,
         country: geoData.country,
         city: geoData.city,
-        isp: geoData.isp,
-        vpnDetected: geoData.proxy || false,
+        isp: geoData.connection?.isp,
+        vpnDetected: geoData.security?.proxy || false,
       };
     } catch (error) {
       console.error('Error fetching network info:', error);
