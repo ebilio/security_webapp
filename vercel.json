@@ -1,6 +1,6 @@
 {
-  "buildCommand": "npm run build",
+  "buildCommand": "bash build.sh",
   "outputDirectory": "frontend/dist",
-  "framework": null,
-  "devCommand": "npm run dev:frontend"
+  "installCommand": "echo 'Skipping root install'",
+  "framework": null
 }
