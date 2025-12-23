@@ -1,291 +1,256 @@
-# 🔒 Security & Network Assessment Web App
+# Security Assessment Web App
 
-Web application full-stack per valutare la sicurezza di rete e dispositivi, con sistema di rating completo basato su vulnerabilità rilevate e configurazioni di sicurezza.
+**Applicazione web client-side per valutazione sicurezza del browser**
 
-## 📋 Caratteristiche
+![Version](https://img.shields.io/badge/version-2.0.0-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Platform](https://img.shields.io/badge/platform-web-orange)
 
-### ✅ Funzionalità Implementate (MVP)
+Una web app moderna e gratuita che analizza la sicurezza del **TUO browser** direttamente dal client, senza bisogno di backend.
 
-- **System Info Collection**: Raccolta completa informazioni hardware, software, OS e rete
-- **Browser Fingerprinting**: Analisi dettagliata browser, privacy score, canvas/WebGL fingerprint
-- **Security Assessment**: Rilevamento antivirus, firewall, vulnerabilità software
-- **Rating Engine**: Sistema di valutazione 0-100 con breakdown per categoria
-- **Dashboard UI**: Interfaccia moderna con gauge animato, grafici e pannelli dettagliati
-- **Real-time Updates**: WebSocket per progresso scansioni in tempo reale
+🔗 **Live Demo**: https://security-webapp-2hc7.vercel.app
 
-### 🎯 Categorie di Valutazione
+---
 
-1. **Browser Security (25%)**: Browser moderno, privacy extensions, cookie settings
-2. **System Security (30%)**: Antivirus, firewall, OS aggiornato
-3. **Network Security (25%)**: Porte chiuse, encryption, password router
-4. **Software Security (20%)**: Software aggiornato, CVE, servizi disabilitati
+## ✨ Caratteristiche
 
-## 🛠 Tech Stack
+- 🌐 **100% Client-Side**: Nessun server, tutto gira nel browser
+- 🔒 **Privacy-First**: Nessun dato inviato a server (eccetto API pubbliche per IP)
+- ⚡ **Ultra Veloce**: Servito via CDN globale (Vercel)
+- 🆓 **Completamente Gratuito**: Hosting e utilizzo
+- 🎨 **Design Cyberpunk**: UI moderna e accattivante
+- 📊 **Rating Dettagliato**: Analisi completa della sicurezza
 
-### Backend
-- **Node.js 20+** - Runtime JavaScript
-- **Express.js** - Web framework
-- **TypeScript** - Type safety
-- **Socket.io** - WebSocket real-time
-- **systeminformation** - System info collection
-- **Helmet** - Security headers
+---
 
-### Frontend
-- **React 18** - UI library
-- **TypeScript** - Type safety
-- **Vite** - Build tool ultra-veloce
-- **TailwindCSS** - Utility-first CSS
-- **React Query** - Data fetching
-- **Zustand** - State management
-- **Recharts** - Grafici e visualizzazioni
-- **FingerprintJS** - Browser fingerprinting
+## 🔍 Cosa Analizza
 
-## 🚀 Deployment
+### Informazioni Browser
+- ✅ User Agent e piattaforma
+- ✅ Lingua e fuso orario
+- ✅ Risoluzione schermo e pixel ratio
+- ✅ Feature detection (WebGL, WebRTC, Storage, ecc.)
 
-**Vuoi deployare l'app online?** Leggi la [Guida Deployment](DEPLOYMENT.md) per istruzioni complete su come pubblicare su Render.com (gratuito).
+### Hardware (accessibile da browser)
+- ✅ CPU cores
+- ✅ Memoria dispositivo (se disponibile)
+- ✅ Touch points
 
-L'app è già configurata e pronta per il deployment con:
-- ✅ `render.yaml` - Configurazione automatica
-- ✅ Build script ottimizzati
-- ✅ Server configurato per servire frontend e backend
-- ✅ SSL/HTTPS automatico
-- ✅ Deploy automatico da GitHub
+### Connessione & Rete
+- ✅ IP pubblico
+- ✅ Geolocalizzazione (paese, città)
+- ✅ ISP
+- ✅ Tipo di connessione
+- ✅ Velocità stimata
 
-## 📦 Installazione Locale
+### Security Assessment
+- ✅ HTTPS vs HTTP
+- ✅ Mixed content detection
+- ✅ Cookie e storage
+- ✅ Do Not Track
+- ✅ WebRTC leak risk
+- ✅ Browser fingerprint entropy
+
+### Rating Categorie
+- 🔐 **Sicurezza Browser** (30%)
+- 🌐 **Sicurezza Connessione** (35%)
+- 🕵️ **Privacy** (25%)
+- 🚀 **Supporto Features** (10%)
+
+---
+
+## 🚀 Deploy su Vercel (Gratis)
+
+### Auto-Deploy da GitHub
+
+1. Fork questo repository
+2. Vai su [vercel.com/new](https://vercel.com/new)
+3. Importa il tuo fork
+4. Deploy! ✅
+
+Vercel leggerà automaticamente `vercel.json` e `build.sh`.
+
+### Deploy Manuale
+
+```bash
+npm install -g vercel
+git clone https://github.com/yourusername/security_webapp
+cd security_webapp
+vercel --prod
+```
+
+---
+
+## 💻 Sviluppo Locale
 
 ### Prerequisiti
 
-- **Node.js** >= 20.0.0
-- **npm** >= 9.0.0
-- **Nmap** (opzionale, per network scanning avanzato)
+- Node.js 18+
+- npm o yarn
 
-### Setup Rapido
-
-```bash
-# 1. Installa tutte le dipendenze (root, backend, frontend)
-npm run install:all
-
-# 2. Avvia in modalità development (avvia backend e frontend simultaneamente)
-npm run dev
-```
-
-L'applicazione sarà disponibile su:
-- **Frontend**: http://localhost:5173
-- **Backend API**: http://localhost:3000
-- **WebSocket**: ws://localhost:3000
-
-### Setup Manuale
-
-Se preferisci avviare backend e frontend separatamente:
+### Setup
 
 ```bash
-# Backend
-cd backend
-npm install
-npm run dev
+# Clona il repository
+git clone https://github.com/yourusername/security_webapp
+cd security_webapp
 
-# Frontend (in un altro terminale)
+# Installa dipendenze frontend
 cd frontend
 npm install
+
+# Avvia dev server
 npm run dev
 ```
 
-## 🚀 Utilizzo
+L'app sarà disponibile su `http://localhost:5173`
 
-1. **Avvia l'applicazione**: `npm run dev` dalla root
-2. **Apri il browser**: Vai su http://localhost:5173
-3. **Avvia Scansione**: Clicca sul bottone "Avvia Scansione"
-4. **Visualizza Risultati**:
-   - Rating complessivo con gauge animato
-   - Breakdown dettagliato per categoria
-   - Punti di forza e raccomandazioni
-   - Info sistema, sicurezza e browser
+---
 
-## 📊 Struttura Progetto
+## 📁 Struttura Progetto
 
 ```
-security-webapp/
-├── backend/                    # Backend Node.js + Express
+security_webapp/
+├── frontend/               # React + Vite app
 │   ├── src/
-│   │   ├── modules/
-│   │   │   ├── system-info/   # Raccolta info sistema
-│   │   │   ├── security-assessment/  # Valutazione sicurezza
-│   │   │   └── rating-engine/ # Calcolo rating
-│   │   ├── routes/            # API endpoints
-│   │   ├── middleware/        # Express middleware
-│   │   ├── types/             # TypeScript types
-│   │   └── server.ts          # Entry point
-│   └── package.json
-│
-├── frontend/                   # Frontend React + Vite
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── Dashboard/     # Dashboard principale
-│   │   │   ├── RatingDisplay/ # Gauge e breakdown
-│   │   │   ├── SystemInfo/    # Pannello info sistema
-│   │   │   ├── SecurityAssessment/  # Pannello sicurezza
-│   │   │   └── BrowserFingerprint/  # Pannello browser
-│   │   ├── services/          # API client, fingerprint, WS
-│   │   ├── types/             # TypeScript types
-│   │   └── App.tsx
-│   └── package.json
-│
-└── package.json               # Root package.json
+│   │   ├── components/     # React components
+│   │   │   ├── Dashboard/
+│   │   │   ├── RatingDisplay/
+│   │   │   └── BrowserFingerprint/
+│   │   ├── services/       # Business logic
+│   │   │   ├── clientInfo.ts      # Raccolta info client
+│   │   │   ├── ratingEngine.ts    # Calcolo rating
+│   │   │   └── fingerprint.ts     # Browser fingerprinting
+│   │   └── types/          # TypeScript types
+│   └── dist/               # Build output
+├── build.sh                # Vercel build script
+├── vercel.json             # Vercel config
+├── DEPLOY.md               # Deployment guide
+└── README.md               # This file
 ```
 
-## 🔧 Configurazione
+---
 
-### Backend (.env)
+## 🛠️ Tecnologie Usate
 
-Crea un file `.env` in `backend/` (oppure usa `.env.example`):
+### Frontend
+- **React 18** - UI framework
+- **TypeScript** - Type safety
+- **Vite** - Build tool & dev server
+- **TailwindCSS** - Styling
+- **Lucide React** - Icons
+- **FingerprintJS** - Browser fingerprinting
 
-```env
-PORT=3000
-NODE_ENV=development
-CORS_ORIGIN=http://localhost:5173
-RATE_LIMIT_WINDOW_MS=900000
-RATE_LIMIT_MAX_REQUESTS=100
-NVD_API_KEY=                    # Opzionale per CVE lookup
+### APIs Esterne
+- **ipify.org** - IP pubblico detection
+- **ipwho.is** - Geolocalizzazione IP
+
+### Hosting
+- **Vercel** - Static hosting + CDN
+
+---
+
+## 📊 Come Funziona
+
+```
+1. Utente apre l'app
+   ↓
+2. Clicca "Avvia Scansione"
+   ↓
+3. App raccoglie info dal browser:
+   - getBrowserFingerprint()
+   - getSystemInfo()
+   - getNetworkInfo() → API esterna per IP
+   - performSecurityAssessment()
+   ↓
+4. Calcola rating basato su:
+   - Sicurezza browser
+   - Sicurezza connessione
+   - Privacy features
+   - Supporto tecnologie moderne
+   ↓
+5. Mostra risultati:
+   - Rating complessivo
+   - Breakdown per categoria
+   - Rischi rilevati
+   - Raccomandazioni
 ```
 
-## 📡 API Endpoints
+---
 
-### REST API
+## 🔒 Privacy & Sicurezza
 
-```
-GET  /api/system/info           - Info sistema completo
-GET  /api/system/public-ip      - IP pubblico
-POST /api/scan/security         - Avvia security assessment
-GET  /api/scan/security/:id     - Risultati assessment
-POST /api/rating/calculate      - Calcola rating
-GET  /api/scan/complete         - Scansione completa
-GET  /health                    - Health check
-```
+### Cosa NON Viene Raccolto
+- ❌ Nessun dato personale
+- ❌ Nessun tracking
+- ❌ Nessun cookie di terze parti
+- ❌ Nessun analytics (se non aggiunti da te)
 
-### WebSocket Events
+### Chiamate Esterne
+L'app fa solo **2 chiamate API esterne**:
+1. `ipify.org` - Per ottenere il tuo IP pubblico
+2. `ipwho.is` - Per geolocalizzare l'IP
 
-**Client → Server:**
-- `scan:start` - Avvia scansione completa
+Entrambe sono chiamate **pubbliche e anonime**.
 
-**Server → Client:**
-- `scan:progress` - Progresso scansione (stage, %, message)
-- `scan:complete` - Scansione completata
-- `scan:error` - Errore durante scansione
+---
 
-## ⚙️ Permessi e Considerazioni
+## 🎯 Limitazioni
 
-### Windows
-- **Antivirus Detection**: Richiede PowerShell (già disponibile)
-- **Firewall Check**: Comando `netsh` (nessun privilegio speciale)
+Essendo una **web app**, non può accedere a:
+- ❌ Antivirus installati (privilegio OS)
+- ❌ Firewall (privilegio OS)
+- ❌ Software installati (privacy browser)
+- ❌ Uso RAM/CPU reale (sandbox browser)
 
-### Linux/macOS
-- **Antivirus/Firewall Check**: Alcuni comandi potrebbero richiedere `sudo`
-- **Network Scanning**: Nmap richiede privilegi elevati per alcune scansioni
+Può solo analizzare ciò che il **browser espone** via Web APIs.
 
-### Privacy
-- ✅ Nessun dato viene memorizzato persistentemente
-- ✅ Tutte le scansioni sono in-memory
-- ✅ Nessuna comunicazione con servizi esterni (eccetto IP pubblico)
-- ✅ Opzionale: export risultati JSON locale
+---
 
-## 🎨 Screenshots
+## 📈 Roadmap
 
-### Dashboard Principale
-- Gauge animato con rating complessivo
-- Breakdown categorie con progress bars
-- Punti di forza e raccomandazioni
+- [ ] Salvataggio storico scansioni (localStorage)
+- [ ] Confronto tra scansioni
+- [ ] Export PDF report
+- [ ] Dark/Light mode toggle
+- [ ] Multi-lingua (EN, IT, ES, FR)
+- [ ] PWA support
+- [ ] Statistiche aggregate (opzionale con backend minimale)
 
-### Pannelli Dettagliati
-- **System Info**: Hardware (CPU, RAM, GPU), OS, Network
-- **Security Assessment**: Antivirus, Firewall, Vulnerabilità, Porte aperte
-- **Browser Fingerprint**: Browser info, privacy score, fingerprints
-
-## 🧪 Testing
-
-```bash
-# Backend
-cd backend
-npm run lint
-npm run build
-
-# Frontend
-cd frontend
-npm run lint
-npm run build
-```
-
-## 📈 Roadmap Future Features
-
-### Fase 2 (Nice to Have)
-- [ ] Network scanning completo con device discovery
-- [ ] Port scanning dettagliato con service fingerprinting
-- [ ] Integrazione CVE database (NVD API) per vulnerabilità
-- [ ] Antivirus/Firewall detection migliorata
-
-### Fase 3 (Advanced)
-- [ ] Export report PDF/JSON
-- [ ] Comparazione con baseline sicurezza
-- [ ] Storico scansioni (con database opzionale)
-- [ ] Notifiche per vulnerabilità critiche
+---
 
 ## 🤝 Contribuire
 
+Contributi sono benvenuti! Per favore:
+
 1. Fork il progetto
-2. Crea il tuo feature branch (`git checkout -b feature/AmazingFeature`)
+2. Crea un branch (`git checkout -b feature/AmazingFeature`)
 3. Commit le modifiche (`git commit -m 'Add some AmazingFeature'`)
 4. Push al branch (`git push origin feature/AmazingFeature`)
 5. Apri una Pull Request
 
-## 📝 Note di Sviluppo
+---
 
-### Build Production
+## 📝 License
 
-```bash
-# Build completo (frontend + backend)
-npm run build
-
-# Build separati
-npm run build:frontend
-npm run build:backend
-```
-
-### Formatting
-
-Il progetto usa **Prettier** e **ESLint** per code formatting:
-
-```bash
-# Backend
-cd backend
-npm run format
-npm run lint
-
-# Frontend
-cd frontend
-npm run format
-npm run lint
-```
-
-## ⚠️ Limitazioni Note (MVP)
-
-1. **Network Scanning**: Implementazione base senza Nmap integration
-2. **CVE Database**: Nessuna integrazione API CVE (richiede rate limiting)
-3. **Multi-platform**: Alcuni check potrebbero non funzionare su tutti gli OS
-4. **Storico**: Nessun database, scansioni solo in-memory
-
-## 📄 Licenza
-
-MIT License - Vedi `LICENSE` file per dettagli
-
-## 🙋 Supporto
-
-Per problemi o domande:
-1. Controlla la documentazione
-2. Verifica i prerequisiti (Node.js, npm)
-3. Controlla i log del backend per errori
-4. Apri una issue su GitHub
+Distribuito sotto licenza MIT. Vedi `LICENSE` per più informazioni.
 
 ---
 
-**Made with ❤️ using React, TypeScript, and Node.js**
+## 🙏 Credits
 
-🔐 *Mantieni il tuo sistema sicuro!*
+- **FingerprintJS** - Browser fingerprinting
+- **ipify** - IP detection
+- **ipwho.is** - IP geolocation
+- **Vercel** - Hosting
+- **TailwindCSS** - Styling
+
+---
+
+## 📧 Contatti
+
+GitHub: [@ebilio](https://github.com/ebilio/security_webapp)
+
+---
+
+⭐ Se ti piace il progetto, lascia una stella su GitHub!
