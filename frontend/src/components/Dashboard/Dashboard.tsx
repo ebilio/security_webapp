@@ -34,31 +34,47 @@ export function Dashboard() {
   });
 
   const handleScan = async () => {
-    setIsScanning(true);
-    setScanProgress({ stage: 'init', progress: 0, message: 'Avvio scansione...' });
+    try {
+      setIsScanning(true);
+      setScanProgress({ stage: 'init', progress: 0, message: 'Connessione in corso...' });
 
-    // Connetti WebSocket
-    wsService.connect();
+      // Rimuovi listener precedenti
+      wsService.removeListeners();
 
-    wsService.onProgress((progress) => {
-      setScanProgress(progress);
-    });
+      // Connetti WebSocket e aspetta la connessione
+      await wsService.connect();
 
-    wsService.onComplete(async () => {
-      await refetchScan();
+      setScanProgress({ stage: 'init', progress: 0, message: 'Avvio scansione...' });
+
+      // Registra i listener
+      wsService.onProgress((progress) => {
+        console.log('Progress received:', progress);
+        setScanProgress(progress);
+      });
+
+      wsService.onComplete(async () => {
+        console.log('Scan complete');
+        await refetchScan();
+        setIsScanning(false);
+        setScanProgress(null);
+        wsService.disconnect();
+      });
+
+      wsService.onError((error) => {
+        console.error('Scan error:', error);
+        setIsScanning(false);
+        setScanProgress(null);
+        wsService.disconnect();
+      });
+
+      // Avvia la scansione
+      await wsService.startScan();
+    } catch (error) {
+      console.error('Failed to start scan:', error);
       setIsScanning(false);
       setScanProgress(null);
       wsService.disconnect();
-    });
-
-    wsService.onError((error) => {
-      console.error('Scan error:', error);
-      setIsScanning(false);
-      setScanProgress(null);
-      wsService.disconnect();
-    });
-
-    wsService.startScan();
+    }
   };
 
   return (
