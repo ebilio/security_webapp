@@ -162,26 +162,33 @@ class ClientInfoService {
    */
   async getNetworkInfo(): Promise<ClientNetworkInfo> {
     try {
-      // Usa ipify per ottenere l'IP pubblico del client
-      const ipResponse = await fetch('https://api.ipify.org?format=json');
-      const ipData = await ipResponse.json();
-
-      // Usa ip-api per ottenere geolocalizzazione (gratis, no API key)
-      const geoResponse = await fetch(`http://ip-api.com/json/${ipData.ip}`);
-      const geoData = await geoResponse.json();
+      // Usa ipapi.co per ottenere IP e geolocalizzazione (HTTPS, gratis)
+      const response = await fetch('https://ipapi.co/json/');
+      const data = await response.json();
 
       return {
-        publicIp: ipData.ip,
-        country: geoData.country,
-        city: geoData.city,
-        isp: geoData.isp,
-        vpnDetected: geoData.proxy || false,
+        publicIp: data.ip || 'Unknown',
+        country: data.country_name,
+        city: data.city,
+        isp: data.org,
+        vpnDetected: data.threat?.is_proxy || false,
       };
     } catch (error) {
       console.error('Error fetching network info:', error);
-      return {
-        publicIp: 'Unknown',
-      };
+
+      // Fallback: prova solo IP con ipify
+      try {
+        const ipResponse = await fetch('https://api.ipify.org?format=json');
+        const ipData = await ipResponse.json();
+        return {
+          publicIp: ipData.ip,
+        };
+      } catch (fallbackError) {
+        console.error('Fallback IP fetch failed:', fallbackError);
+        return {
+          publicIp: 'Unknown',
+        };
+      }
     }
   }
 
