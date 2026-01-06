@@ -8,7 +8,7 @@
 
 Una web app moderna e gratuita che analizza la sicurezza del **TUO browser** direttamente dal client, senza bisogno di backend.
 
-🔗 **Live Demo**: https://security-webapp-2hc7.vercel.app
+🔗 **Live Demo**: https://security-webapp.vercel.app/
 
 ---
 
