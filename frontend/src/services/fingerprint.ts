@@ -215,28 +215,17 @@ function calculatePrivacyScore(): number {
     score += 10; // Firefox with enhanced privacy
   }
 
-  // Third-party cookies blocked (+8 points)
-  // Check if third-party cookies are restricted via document.cookie in iframe context
+  // Storage restrictions (+8 points)
+  // Controlla se localStorage è disponibile (proxy affidabile per privacy restrittiva).
+  // Il test iframe con allow-same-origin non simula correttamente i contesti
+  // third-party ed è stato rimosso per evitare side effect nel DOM.
   try {
-    const iframe = document.createElement('iframe');
-    iframe.style.display = 'none';
-    iframe.sandbox.add('allow-same-origin');
-    document.body.appendChild(iframe);
-    const iframeDoc = iframe.contentDocument;
-    if (iframeDoc) {
-      try {
-        iframeDoc.cookie = 'test=1';
-        if (!iframeDoc.cookie) {
-          score += 8; // Third-party cookies blocked
-        }
-      } catch {
-        score += 8; // Exception indicates blocking
-      }
-    }
-    document.body.removeChild(iframe);
+    const key = '__priv_test__';
+    localStorage.setItem(key, '1');
+    localStorage.removeItem(key);
+    // localStorage disponibile — nessun punto extra (configurazione normale)
   } catch {
-    // If we can't test, assume some protection
-    score += 4;
+    score += 8; // Storage bloccato = contesto privacy restrittivo
   }
 
   // Canvas fingerprinting protection (+8 points)

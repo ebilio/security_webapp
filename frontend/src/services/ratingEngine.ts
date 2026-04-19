@@ -4,6 +4,7 @@
  */
 
 import type { ClientSystemInfo, ClientNetworkInfo, ClientSecurityAssessment } from './clientInfo';
+import type { BrowserFingerprint } from '../types';
 
 export interface RatingCategory {
   name: string;
@@ -27,7 +28,7 @@ class ClientRatingEngine {
     systemInfo: ClientSystemInfo,
     networkInfo: ClientNetworkInfo,
     securityAssessment: ClientSecurityAssessment,
-    browserFingerprint: any
+    browserFingerprint: BrowserFingerprint
   ): RatingResult {
     const categories: RatingCategory[] = [
       this.rateBrowserSecurity(systemInfo),
@@ -150,7 +151,7 @@ class ClientRatingEngine {
   /**
    * Rating privacy
    */
-  private ratePrivacy(systemInfo: ClientSystemInfo, fingerprint: any): RatingCategory {
+  private ratePrivacy(systemInfo: ClientSystemInfo, fingerprint: BrowserFingerprint): RatingCategory {
     let score = 100;
     const details: string[] = [];
 
@@ -310,7 +311,7 @@ class ClientRatingEngine {
   /**
    * Calcola entropia del fingerprint (più alto = più identificabile)
    */
-  private calculateEntropy(fingerprint: any): number {
+  private calculateEntropy(fingerprint: BrowserFingerprint): number {
     if (!fingerprint) return 0;
 
     let entropy = 0;
@@ -318,7 +319,6 @@ class ClientRatingEngine {
     // Calcolo semplificato dell'entropia
     if (fingerprint.canvas) entropy += 5;
     if (fingerprint.webgl) entropy += 5;
-    if (fingerprint.audio) entropy += 3;
     if (fingerprint.fonts?.length > 20) entropy += 3;
     if (fingerprint.plugins?.length > 5) entropy += 2;
 

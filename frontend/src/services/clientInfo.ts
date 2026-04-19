@@ -176,7 +176,6 @@ class ClientInfoService {
           geoData = await geoResponse.json();
         }
       } catch (geoError) {
-        console.log('Geolocation API not available, skipping...');
       }
 
       return {
@@ -187,7 +186,6 @@ class ClientInfoService {
         vpnDetected: geoData.security?.proxy || false,
       };
     } catch (error) {
-      console.error('Error fetching network info:', error);
       return {
         publicIp: 'Unknown',
       };
